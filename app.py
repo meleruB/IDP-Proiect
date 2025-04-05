@@ -15,6 +15,10 @@ def login():
 def books():
     return render_template('books.html')
 
+@app.route('/wrong_login')
+def wrong_login():
+    return render_template('wrong_login.html')
+
 
 @app.route('/dologin', methods=['POST'])
 def dologin():
@@ -23,6 +27,8 @@ def dologin():
 
     if username == USERNAME and password == PASSWORD:
         return redirect(url_for('books'))
+    else:
+        return redirect(url_for('wrong_login'))
 
 
 if __name__ == "__main__":
