@@ -10,8 +10,8 @@ categories = [
 ]
 
 bookdb = [
-    {"name": "title1", "description": "description1", "category": "category1", "author": "author1"},
-    {"name": "title2", "description": "description2", "category": "category2", "author": "author2"}
+    {"title": "Ocolul pamantului in 80 de zile", "description": "description1", "category": "SF", "author": "Jules Verne"},
+    {"title": "Roman", "description": "description2", "category": "action", "author": "Mihai Ionescu"}
 ]
 
 @app.route('/')
@@ -38,9 +38,27 @@ def dologin():
     else:
         return redirect(url_for('wrong_login'))
 
+
+def searchBooks(query):
+    result = []
+    words = query.split(" ")
+    for word in words:
+        for book in bookdb:
+            if (
+                    word in book.get("title")
+                    or word in book.get("author")
+                    or word in book.get("description")
+                    or word in book.get("category")
+            ):
+                result.append(book)
+    return result
+
+
 @app.route('/search', methods=['GET'])
 def search():
-    bookResults = bookdb
+    query = request.args.get("query")
+
+    bookResults = searchBooks(query)
     return render_template("books.html", bookResults=bookResults)
 
 
