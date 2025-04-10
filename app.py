@@ -5,6 +5,10 @@ app = Flask(__name__)
 USERNAME = "admin"
 PASSWORD = "admin"
 
+categories = [
+    "category1", "category2"
+]
+
 books = [
     {"name": "title1", "description": "description1", "catgory": "category1", "author": "author1"},
     {"name": "title2", "description": "description2", "catgory": "category2", "author": "author2"}
