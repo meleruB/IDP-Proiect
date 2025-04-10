@@ -9,7 +9,7 @@ books = [
     {"name": "title1", "description": "description1", "catgory": "category1", "author": "author1"},
     {"name": "title2", "description": "description2", "catgory": "category2", "author": "author2"}
 ]
-.
+
 @app.route('/')
 def login():
     return render_template('login.html')
