@@ -2,16 +2,16 @@ from flask import Flask, render_template, redirect, url_for, request
 
 app = Flask(__name__)
 
-USERNAME = "admin"
-PASSWORD = "admin"
+USERNAME = "a"
+PASSWORD = ""
 
 categories = [
     "category1", "category2"
 ]
 
-books = [
-    {"name": "title1", "description": "description1", "catgory": "category1", "author": "author1"},
-    {"name": "title2", "description": "description2", "catgory": "category2", "author": "author2"}
+bookdb = [
+    {"name": "title1", "description": "description1", "category": "category1", "author": "author1"},
+    {"name": "title2", "description": "description2", "category": "category2", "author": "author2"}
 ]
 
 @app.route('/')
@@ -37,6 +37,11 @@ def dologin():
         return redirect(url_for('books'))
     else:
         return redirect(url_for('wrong_login'))
+
+@app.route('/search', methods=['GET'])
+def search():
+    bookResults = bookdb
+    return render_template("books.html", bookResults=bookResults)
 
 
 if __name__ == "__main__":

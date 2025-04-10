@@ -1,6 +1,17 @@
-What books are you looking for:
-<br/>
-<input type="text" name="query">
-<br/>
-<input type="button" value="search">
-<br/>
+<form action="{{url_for('search')}}" method="get">
+    What books are you looking for:
+    <br/>
+    <input type="text" name="query">
+    <br/>
+    <input type="submit" value="search">
+</form>
+
+{% if bookResults %}
+
+ Results
+
+ {% for item in bookResults %}
+    <li>{{item}}</li>
+ {% endfor %}
+
+{% endif %}
