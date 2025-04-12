@@ -6,14 +6,16 @@
     <input type="submit" value="search">
 </form>
 
-{% if bookResults %}
-
- Results
-
- {% for item in bookResults %}
-    <li>{{item}}</li>
- {% endfor %}
-
+{% if bookResults is not defined %}
+   Search for books
 {% else %}
-No books found
+    {% if bookResults %}
+         Results
+         {% for item in bookResults %}
+             <li>{{item}}</li>
+         {% endfor %}
+
+    {% else  %}
+        No books found
+    {% endif %}
 {% endif %}

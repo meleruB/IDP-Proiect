@@ -11,6 +11,8 @@ categories = [
 
 bookdb = [
     {"title": "Ocolul pamantului in 80 de zile", "description": "description1", "category": "SF", "author": "Jules Verne"},
+    {"title": "Ocolul Lunii", "description": "description1", "category": "SF",
+     "author": "Jules Verne"},
     {"title": "Roman", "description": "description2", "category": "action", "author": "Mihai Ionescu"}
 ]
 
@@ -41,14 +43,14 @@ def dologin():
 
 def searchBooks(query):
     result = []
-    words = query.split(" ")
+    words = query.lower().split(" ")
     for word in words:
         for book in bookdb:
             if (
-                    word in book.get("title")
-                    or word in book.get("author")
-                    or word in book.get("description")
-                    or word in book.get("category")
+                    word in book.get("title").lower()
+                    or word in book.get("author").lower()
+                    or word in book.get("description").lower()
+                    or word in book.get("category").lower()
             ):
                 result.append(book)
     return result
