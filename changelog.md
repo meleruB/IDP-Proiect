@@ -1,7 +1,10 @@
 # Changelog 
 
 A web site for searching books
+
 https://github.com/meleruB/IDP-Proiect
+
+Student: Meleru Bogdan Mihai 344C4
 
 ## [0.0.2] - 2025-04-26
 
