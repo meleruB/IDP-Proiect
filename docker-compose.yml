@@ -5,18 +5,45 @@ services:
       - "5000:5000"
     depends_on:
       - db
+    networks:
+      - data
+      - logic
   recommend-service:
     build: ./recommend-service
     ports:
       - "5002:5000"
+    networks:
+      - logic
   db:
     image: postgres:15
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: app_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - data
+
   pgadmin:
     image: dpage/pgadmin4
-    depends_on:
-       - db
     ports:
       - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@example.com
+      PGADMIN_DEFAULT_PASSWORD: secret
+    depends_on:
+      - db
+    networks:
+      - data
+
+volumes:
+  pgdata:
+
+networks:
+  data:
+  logic:
+
 
 
 
