@@ -16,4 +16,4 @@ COPY templates/wrong_login.html /usr/src/app/templates/
 
 EXPOSE 5000
 
-CMD ["python3", "/usr/src/app/app.py"]
+CMD ["/venv/bin/python", "/usr/src/app/app.py"]
