@@ -1,6 +1,27 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, jsonify
+from models import db, Book
+from sqlalchemy import or_
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:secret@db:5432/app_db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.init_app(app)
+
+bookdb = [
+    {"title": "Ocolul pamantului in 80 de zile", "description": "description1", "category": "SF", "author": "Jules Verne"},
+    {"title": "Ocolul Lunii", "description": "description1", "category": "SF", "author": "Jules Verne"},
+    {"title": "Roman", "description": "description2", "category": "action", "author": "Mihai Ionescu"}
+]
+
+with app.app_context():
+    db.create_all()
+
+    if not Book.query.first():
+        for b in bookdb:
+            db.session.add(Book(title=b["title"], author=b["author"], category=b["category"], description=b["description"]))
+        db.session.commit()
+
 
 USERNAME = "a"
 PASSWORD = ""
@@ -9,12 +30,7 @@ categories = [
     "category1", "category2"
 ]
 
-bookdb = [
-    {"title": "Ocolul pamantului in 80 de zile", "description": "description1", "category": "SF", "author": "Jules Verne"},
-    {"title": "Ocolul Lunii", "description": "description1", "category": "SF",
-     "author": "Jules Verne"},
-    {"title": "Roman", "description": "description2", "category": "action", "author": "Mihai Ionescu"}
-]
+
 
 @app.route('/')
 def login():
@@ -42,18 +58,19 @@ def dologin():
 
 
 def searchBooks(query):
-    result = []
-    words = query.lower().split(" ")
-    for word in words:
-        for book in bookdb:
-            if (
-                    word in book.get("title").lower()
-                    or word in book.get("author").lower()
-                    or word in book.get("description").lower()
-                    or word in book.get("category").lower()
-            ):
-                result.append(book)
-    return result
+    results = Book.query.filter(
+        or_(
+            Book.category.ilike(f"%{query}%"),
+            Book.author.ilike(f"%{query}%"),
+            Book.title.ilike(f"%{query}%"),
+            Book.description.ilike(f"%{query}%")
+        )
+    ).all()
+
+    return [
+        {"title": b.title, "author": b.author, "category": b.category, "description": b.description}
+        for b in results
+    ]
 
 
 @app.route('/search', methods=['GET'])

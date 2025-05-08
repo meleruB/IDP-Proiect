@@ -9,6 +9,8 @@ COPY requirements.txt /usr/src/app/
 RUN pip install --no-cache-dir -r /usr/src/app/requirements.txt
 
 COPY app.py /usr/src/app/
+COPY models.py /usr/src/app/
+
 COPY templates/books.html /usr/src/app/templates/
 COPY templates/login.html /usr/src/app/templates/
 COPY templates/wrong_login.html /usr/src/app/templates/
