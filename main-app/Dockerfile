@@ -14,6 +14,10 @@ COPY models.py /usr/src/app/
 COPY templates/books.html /usr/src/app/templates/
 COPY templates/login.html /usr/src/app/templates/
 COPY templates/wrong_login.html /usr/src/app/templates/
+COPY templates/newbook.html /usr/src/app/templates/
+COPY templates/addsuccess.html /usr/src/app/templates/
+
+
 
 
 EXPOSE 5000

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, jsonify
-from models import db, Book
+from models import db, DBBook
 from sqlalchemy import or_
 
 app = Flask(__name__)
@@ -16,10 +16,20 @@ bookdb = [
 
 with app.app_context():
     db.create_all()
+    # Book.query.delete()
+    # db.session.commit()
 
-    if not Book.query.first():
+    if not DBBook.query.first():
         for b in bookdb:
-            db.session.add(Book(title=b["title"], author=b["author"], category=b["category"], description=b["description"]))
+            db.session.add(
+                DBBook(
+                    title=b["title"],
+                    author=b["author"],
+                    category=b["category"],
+                    description=b["description"],
+                    total=4,
+                    available=4
+                ))
         db.session.commit()
 
 
@@ -57,18 +67,23 @@ def dologin():
         return redirect(url_for('wrong_login'))
 
 
+@app.route('/newbook')
+def newbook():
+    return render_template('newbook.html')
+
 def searchBooks(query):
-    results = Book.query.filter(
+    results = DBBook.query.filter(
         or_(
-            Book.category.ilike(f"%{query}%"),
-            Book.author.ilike(f"%{query}%"),
-            Book.title.ilike(f"%{query}%"),
-            Book.description.ilike(f"%{query}%")
+            DBBook.category.ilike(f"%{query}%"),
+            DBBook.author.ilike(f"%{query}%"),
+            DBBook.title.ilike(f"%{query}%"),
+            DBBook.description.ilike(f"%{query}%")
         )
     ).all()
 
     return [
-        {"title": b.title, "author": b.author, "category": b.category, "description": b.description}
+        {"title": b.title, "author": b.author, "category": b.category,
+         "description": b.description, "total": b.total, "available": b.available}
         for b in results
     ]
 
@@ -80,6 +95,28 @@ def search():
     bookResults = searchBooks(query)
     return render_template("books.html", bookResults=bookResults)
 
+
+@app.route('/addbook', methods=['POST'])
+def addbook():
+    title = request.form.get("title")
+    author = request.form.get("author")
+    description = request.form.get("description")
+    category = request.form.get("category")
+    number = request.form.get("number")
+
+    db.session.add(
+        DBBook(
+            title=title,
+            author=author,
+            category=category,
+            description=description,
+            total=int(number),
+            available=int(number)
+        ))
+
+
+    db.session.commit()
+    return render_template("addsuccess.html")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
