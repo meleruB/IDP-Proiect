@@ -19,3 +19,15 @@ class DBBook(db.Model):
     total = db.Column(db.Integer, nullable=False)
     available = db.Column(db.Integer, nullable=False)
 
+
+class Person(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    address = db.Column(db.String(240), nullable=False)
+
+
+class BorrowedBook(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    bookid = db.Column(db.Integer, nullable=False)
+    personid = db.Column(db.Integer, nullable=False)
+    date = db.Column(db.Date, nullable=False)
