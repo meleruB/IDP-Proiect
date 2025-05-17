@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  main-app:
+    image: bogdanmeleru/main-app:latest
+    ports:
+      - "5000:5000"
+    networks:
+      - data
+      - logic
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  recommend-service:
+    image: bogdanmeleru/recommend-service:latest
+    ports:
+      - "5002:5000"
+    networks:
+      - logic
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: app_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - data
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "8080:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin@example.com
+      PGADMIN_DEFAULT_PASSWORD: secret
+    networks:
+      - data
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  pgdata:
+
+networks:
+  data:
+  logic:
