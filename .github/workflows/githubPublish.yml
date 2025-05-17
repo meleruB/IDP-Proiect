@@ -25,3 +25,10 @@ jobs:
           context: ./main-app
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/main-app:latest
+
+      - name: Build and push recommend-service
+        uses: docker/build-push-action@v5
+        with:
+          context: ./recommend-service
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/recommend-service:latest
