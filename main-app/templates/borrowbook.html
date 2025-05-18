@@ -1,0 +1,16 @@
+<a href="/books">home</a> / <a href="/newbook">new book</a>
+/ <a href="/newperson">new person</a> / <a href="/borrowbook">borrow book</a>
+<br/>
+
+<form action="{{url_for('borrowbook')}}" method="post">
+    Borrow book
+    <br/>
+    bookid:
+    <input type="text" name="bookid">
+    <br/>
+    personid:
+    <input type="text" name="personid">
+    <br/>
+
+    <input type="submit" value="borrow">
+</form>

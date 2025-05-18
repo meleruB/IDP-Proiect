@@ -16,8 +16,10 @@ COPY templates/login.html /usr/src/app/templates/
 COPY templates/wrong_login.html /usr/src/app/templates/
 COPY templates/newbook.html /usr/src/app/templates/
 COPY templates/addsuccess.html /usr/src/app/templates/
-
-
+COPY templates/newperson.html /usr/src/app/templates/
+COPY templates/addPersonSuccess.html /usr/src/app/templates/
+COPY templates/borrowbook.html /usr/src/app/templates/
+COPY templates/borrowSuccess.html /usr/src/app/templates/
 
 
 EXPOSE 5000
