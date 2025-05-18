@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, jsonify
-from models import db, DBBook
+from models import db, DBBook, Person, BorrowedBook
 from sqlalchemy import or_
 
 app = Flask(__name__)
@@ -71,6 +71,17 @@ def dologin():
 def newbook():
     return render_template('newbook.html')
 
+
+@app.route('/newperson')
+def newperson():
+    return render_template('newperson.html')
+
+
+@app.route('/borrowbook')
+def borrowbook():
+    return render_template('borrowbook.html')
+
+
 def searchBooks(query):
     results = DBBook.query.filter(
         or_(
@@ -117,6 +128,38 @@ def addbook():
 
     db.session.commit()
     return render_template("addsuccess.html")
+
+@app.route('/addperson', methods=['POST'])
+def addperson():
+    name = request.form.get("name")
+    address = request.form.get("address")
+
+    db.session.add(
+        Person(
+            name=name,
+            address=address
+        ))
+
+
+    db.session.commit()
+    return render_template("addPersonSuccess.html")
+
+
+@app.route('/borrow', methods=['POST'])
+def borrow():
+    bookid = request.form.get("bookid")
+    personid = request.form.get("personid")
+
+    db.session.add(
+        BorrowedBook(
+            bookid=bookid,
+            personid=personid
+        ))
+
+
+    db.session.commit()
+    return render_template("borrowSuccess.html")
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
