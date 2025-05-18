@@ -24,6 +24,17 @@ services:
       restart_policy:
         condition: on-failure
 
+  auth-service:
+    image: bogdanmeleru/auth-service:latest
+    ports:
+      - "5004:5000"
+    networks:
+      - logic
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
   db:
     image: postgres:15
     environment:
