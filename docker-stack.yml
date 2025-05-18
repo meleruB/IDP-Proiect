@@ -9,7 +9,10 @@ services:
       - data
       - logic
     deploy:
-      replicas: 1
+      replicas: 3
+      placement:
+        constraints:
+          - node.role == worker
       restart_policy:
         condition: on-failure
 
@@ -20,7 +23,10 @@ services:
     networks:
       - logic
     deploy:
-      replicas: 1
+      replicas: 3
+      placement:
+        constraints:
+          - node.role == worker
       restart_policy:
         condition: on-failure
 
@@ -31,7 +37,10 @@ services:
     networks:
       - logic
     deploy:
-      replicas: 1
+      replicas: 3
+      placement:
+        constraints:
+          - node.role == worker
       restart_policy:
         condition: on-failure
 
