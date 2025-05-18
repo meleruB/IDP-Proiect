@@ -1,0 +1,22 @@
+_format_version: "3.0"
+services:
+  - name: main-app
+    url: http://main-app:5000
+    routes:
+      - name: main-app-route
+        paths:
+          - /main
+
+  - name: recommend-service
+    url: http://recommend-service:5000
+    routes:
+      - name: recommend-route
+        paths:
+          - /recommend
+
+  - name: auth-service
+    url: http://auth-service:5000
+    routes:
+      - name: auth-route
+        paths:
+          - /auth
